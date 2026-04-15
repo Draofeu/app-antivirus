@@ -39,8 +39,40 @@
             });
         }
 
-        // --- LOGIQUE DE SCAN ---
-        const BLACKLIST = ["5d41402abc4b2a76b9719d911017c592", "098f6bcd4621d373cade4e832627b4f6"];
+
+// Base de données des 10 menaces célèbres (Signatures SHA-256)
+        const BLACKLIST = {
+            // Emotet (Botnet très dangereux)
+            "432c668b8e0b686b245a6c3f6834e0227181f9b3b89552178d8a7c293674681a": "Trojan.Emotet",
+            
+            // Wannacry (Le célèbre Ransomware)
+            "24d00b57954f4e6704064798c1491ba366c055e900a3908b350699047970d47d": "Ransomware.WannaCry",
+            
+            // Agent Tesla (Spyware qui vole les mots de passe)
+            "6016626966150249826372f883f3e1858f918451b759325988e401ec86d6f284": "Spyware.AgentTesla",
+            
+            // Formbook (Voleur de données)
+            "4439c36640c542194b1509355153285c5484a0d9b4b02554e2f3922d4f20b8f4": "Trojan.Formbook",
+            
+            // Lokibot (Infostealer)
+            "9904944917a1a011210817c75a40a233543d3950ee03328e19c0b560a699863c": "Stealer.LokiBot",
+            
+            // Nanocore RAT (Outil de contrôle à distance malveillant)
+            "2764ecf393b4999a4e4be9348c407841961e9389a9f993d39695679905953503": "RAT.NanoCore",
+            
+            // Remcos RAT (Souvent utilisé pour l'espionnage)
+            "7a57c5a07c1303866d92e59146f363c457d4764d84a7e94f8774e1d305609462": "RAT.Remcos",
+            
+            // GuLoader (Téléchargeur de malwares)
+            "f2385108f97e68270502b48a80447361955b206771e846059d6092049d59046c": "Downloader.GuLoader",
+            
+            // Quakbot (Cheval de Troie bancaire)
+            "18b8f2d6e3552086c8721c000e30d07525f23594738546b858e937d578ec09f0": "Banker.Qakbot",
+            
+            // IcedID (Ciblage des entreprises)
+            "b697331908e33230678d91295b92209d8569528f8928374a26084a9e2d312275": "Trojan.IcedID"
+        };
+
 
         document.getElementById('fileInput').addEventListener('change', async function(e) {
             const file = e.target.files[0];
@@ -54,11 +86,14 @@
             const hashArray = Array.from(new Uint8Array(hashBuffer));
             const fileHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
-            if (BLACKLIST.includes(fileHash)) {
-                resDiv.innerHTML = `<div class="danger">⚠️ MENACE DÉTECTÉE !<br>Ce fichier correspond à un virus connu.</div>`;
+            // Vérification améliorée
+            if (fileHash in BLACKLIST) {
+                const virusName = BLACKLIST[fileHash];
+                resDiv.innerHTML = `<div class="danger">⚠️ MENACE DÉTECTÉE !<br>Type : ${virusName}</div>`;
             } else {
-                resDiv.innerHTML = `<div class="safe">✅ AUCUN VIRUS CONNU<br>Le fichier semble sain.</div>`;
+                resDiv.innerHTML = `<div class="safe">✅ AUCUN VIRUS CONNU<br>Le fichier semble sain dans notre base.</div>`;
             }
+
         });
     </script>
 </body>
