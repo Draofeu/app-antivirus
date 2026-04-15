@@ -1,0 +1,16 @@
+{
+  "name": "CyberShield Mobile",
+  "short_name": "CyberShield",
+  "description": "Scanner de sécurité pour fichiers suspects",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#1a1a2e",
+  "theme_color": "#e94560",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/513/513562.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

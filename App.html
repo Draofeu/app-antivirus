@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberShield Mobile</title>
+    
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#e94560">
+
+    <style>
+        body { font-family: sans-serif; background: #1a1a2e; color: white; text-align: center; padding: 20px; }
+        .card { background: #16213e; border-radius: 15px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); max-width: 400px; margin: auto; }
+        button { background: #e94560; color: white; border: none; padding: 15px 30px; border-radius: 5px; font-size: 16px; cursor: pointer; margin-top: 20px; }
+        #result { margin-top: 20px; text-align: left; font-size: 14px; word-break: break-all; }
+        .danger { color: #ff4d4d; font-weight: bold; background: rgba(255,0,0,0.1); padding: 10px; border-radius: 5px; }
+        .safe { color: #4dff88; background: rgba(0,255,0,0.1); padding: 10px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>🛡️ CyberShield</h1>
+        <p>Scanner anti-virus mobile</p>
+        
+        <input type="file" id="fileInput" style="display: none;">
+        <button onclick="document.getElementById('fileInput').click()">Analyser un fichier</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // LIEN N°2 : Enregistrement du Service Worker (pour le mode hors-ligne)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log("Lien établi avec sw.js !"))
+                .catch(err => console.log("Échec du lien avec sw.js", err));
+            });
+        }
+
+        // --- LOGIQUE DE SCAN ---
+        const BLACKLIST = ["5d41402abc4b2a76b9719d911017c592", "098f6bcd4621d373cade4e832627b4f6"];
+
+        document.getElementById('fileInput').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const resDiv = document.getElementById('result');
+            resDiv.innerHTML = "Analyse en cours...";
+
+            const buffer = await file.arrayBuffer();
+            const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const fileHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+            if (BLACKLIST.includes(fileHash)) {
+                resDiv.innerHTML = `<div class="danger">⚠️ MENACE DÉTECTÉE !<br>Ce fichier correspond à un virus connu.</div>`;
+            } else {
+                resDiv.innerHTML = `<div class="safe">✅ AUCUN VIRUS CONNU<br>Le fichier semble sain.</div>`;
+            }
+        });
+    </script>
+</body>
+</html>
