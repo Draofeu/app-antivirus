@@ -126,14 +126,14 @@
        let finalHTML = `<strong>Résultats de l'analyse :</strong><br><br>`;
        
        finalHTML += visualAnalysis.isAI 
-           ? `<div class="danger">âš ï¸ Indices d'IA détectés (${visualAnalysis.confidence}%) : ${visualAnalysis.details}</div>`
-           : `<div class="safe">âœ… Structure de pixels naturelle détectée.</div>`;
+           ? `<div class="danger"> Indices d'IA détectés (${visualAnalysis.confidence}%) : ${visualAnalysis.details}</div>`
+           : `<div class="safe"> Structure de pixels naturelle détectée.</div>`;
 
        finalHTML += `<br>`;
 
        finalHTML += webAnalysis.found 
-           ? `<div class="danger">ðŸ”— Source identifiée : Trouvé sur des banques d'images IA.</div>`
-           : `<div class="safe">ðŸŒ Aucune occurrence suspecte sur le web.</div>`;
+           ? `<div class="danger">”— Source identifiée : Trouvé sur des banques d'images IA.</div>`
+           : `<div class="safe"> Aucune occurrence suspecte sur le web.</div>`;
 
        resDiv.innerHTML = finalHTML;
    });
