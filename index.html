@@ -96,5 +96,71 @@
 
         });
     </script>
+    <div class="card" style="margin-top: 20px;">
+   <h1>ðŸ–¼ï¸ IA Detector</h1>
+   <p>Analyse d'authenticité d'image</p>
+   
+   <input type="file" id="iaInput" accept="image/*" style="display: none;">
+   <button onclick="document.getElementById('iaInput').click()" style="background: #4dff88; color: #1a1a2e;">Analyser une photo</button>
+   
+   <div id="iaResult" style="margin-top: 20px; text-align: left; font-size: 14px;"></div>
+</div>
+
+<script>
+   // --- PARTIE DÉTECTION IA ---
+   document.getElementById('iaInput').addEventListener('change', async function(e) {
+       const file = e.target.files[0];
+       if (!file) return;
+
+       const resDiv = document.getElementById('iaResult');
+       resDiv.innerHTML = "ðŸ” Analyse visuelle et recherche contextuelle...";
+
+       // 1. Simulation d'Analyse Visuelle (Algorithme de détection d'artefacts)
+       // Dans une vraie app, on enverrait le 'file' à un serveur avec TensorFlow ou un modèle spécialisé
+       const visualAnalysis = await simulateVisualAIAnalysis(file);
+
+       // 2. Simulation de Recherche d'Information (API Reverse Image Search)
+       const webAnalysis = await simulateWebSearch(file);
+
+       // Affichage des résultats combinés
+       let finalHTML = `<strong>Résultats de l'analyse :</strong><br><br>`;
+       
+       finalHTML += visualAnalysis.isAI 
+           ? `<div class="danger">âš ï¸ Indices d'IA détectés (${visualAnalysis.confidence}%) : ${visualAnalysis.details}</div>`
+           : `<div class="safe">âœ… Structure de pixels naturelle détectée.</div>`;
+
+       finalHTML += `<br>`;
+
+       finalHTML += webAnalysis.found 
+           ? `<div class="danger">ðŸ”— Source identifiée : Trouvé sur des banques d'images IA.</div>`
+           : `<div class="safe">ðŸŒ Aucune occurrence suspecte sur le web.</div>`;
+
+       resDiv.innerHTML = finalHTML;
+   });
+
+   // Fonction simulée pour l'analyse visuelle (Explications pour l'étape suivante)
+   async function simulateVisualAIAnalysis(file) {
+       // Ici, on devrait appeler une API comme Sightengine ou Hive Moderation
+       return new Promise(resolve => {
+           setTimeout(() => {
+               resolve({
+                   isAI: true,
+                   confidence: 88,
+                   details: "Anomalies dans les textures de peau et arrière-plan trop lisse."
+               });
+           }, 1500);
+       });
+   }
+
+   // Fonction simulée pour la recherche web
+   async function simulateWebSearch(file) {
+       // Ici, on appellerait une API de recherche inversée (ex: SerpApi)
+       return new Promise(resolve => {
+           setTimeout(() => {
+               resolve({ found: false });
+           }, 2000);
+       });
+   }
+</script>
 </body>
 </html>
